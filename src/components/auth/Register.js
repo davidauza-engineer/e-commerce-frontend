@@ -8,6 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Alert from "../alert/Alert";
+import clienteAxios from "../../config/axios";
+import {withRouter} from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,28 +32,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const SignIn = (props) => {
   const classes = useStyles();
-  const [user, setUser] = useState({
+  const [userInfo, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    confirmation_password: "",
+    password_confirmation: "",
   });
   const [error, setError] = useState(false);
 
-  const sendInformation = (e) => {
+  const handleChange = (e) => {
+    setUser({
+      ...userInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const sendInformation = async (e) => {
     e.preventDefault();
     if (
-      user.name === "" ||
-      user.email === "" ||
-      user.password === "" ||
-      user.confirmation_passwor === ""
+      userInfo.name === "" ||
+      userInfo.email === "" ||
+      userInfo.password === "" ||
+      userInfo.password_confirmation === ""
     ) {
       setError(true);
       return;
     }
     setError(false);
+    const api_user = {
+      name: userInfo.name,
+      email: userInfo.email,
+      password: userInfo.password,
+      password_confirmation: userInfo.password_confirmation,
+    };
+    console.log();
+
+    try {
+      await clienteAxios.post(`/users`, { api_user });
+      Swal.fire("Tu Registro fue exitoso", "Has iniciado Sesion", "success");
+      props.history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -76,6 +101,7 @@ export default function SignIn() {
             name="name"
             autoComplete="name"
             autoFocus
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
@@ -85,6 +111,7 @@ export default function SignIn() {
             label="Correo electronico"
             name="email"
             autoComplete="email"
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
@@ -95,16 +122,18 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
             margin="normal"
             fullWidth
-            name="confirmation_password"
+            name="password_confirmation"
             label="Confirma tu contraseña"
             type="password"
-            id="confirmation_password"
-            autoComplete="confirmation_password"
+            id="password_confirmation"
+            autoComplete="password_confirmation"
+            onChange={handleChange}
           />
 
           <Button
@@ -121,3 +150,5 @@ export default function SignIn() {
     </Container>
   );
 }
+
+export default withRouter(SignIn)
