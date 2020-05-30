@@ -3,16 +3,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Alert from '../alert/Alert'
+import Alert from "../alert/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,24 +31,42 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmation_password: "",
+  });
   const [error, setError] = useState(false);
-  
-  const sendInformation = e => {
-      e.preventDefault()
-  }
+
+  const sendInformation = (e) => {
+    e.preventDefault();
+    if (
+      user.name === "" ||
+      user.email === "" ||
+      user.password === "" ||
+      user.confirmation_passwor === ""
+    ) {
+      setError(true);
+      return;
+    }
+    setError(false);
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        {error && (
+          <Alert mensaje="Todos los campos deben estar diligenciados" />
+        )}
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Registro
         </Typography>
-        <form className={classes.form} noValidate onSubmit= {sendInformation}>
+        <form className={classes.form} noValidate onSubmit={sendInformation}>
           <TextField
             variant="outlined"
             margin="normal"
