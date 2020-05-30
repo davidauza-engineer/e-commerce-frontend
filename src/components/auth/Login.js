@@ -29,23 +29,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
   const [user, setUser] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmation_password: "",
   });
   const [error, setError] = useState(false);
 
   const sendInformation = (e) => {
     e.preventDefault();
     if (
-      user.name === "" ||
       user.email === "" ||
-      user.password === "" ||
-      user.confirmation_passwor === ""
+      user.password === "" 
     ) {
       setError(true);
       return;
@@ -64,19 +60,9 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Registro
+          Ingreso
         </Typography>
         <form className={classes.form} noValidate onSubmit={sendInformation}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="name"
-            label="Nombre"
-            name="name"
-            autoComplete="name"
-            autoFocus
-          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -96,17 +82,6 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            name="confirmation_password"
-            label="Confirma tu contraseña"
-            type="password"
-            id="confirmation_password"
-            autoComplete="confirmation_password"
-          />
-
           <Button
             type="submit"
             fullWidth
@@ -114,7 +89,7 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
           >
-            Registro
+            Ingresar
           </Button>
         </form>
       </div>
