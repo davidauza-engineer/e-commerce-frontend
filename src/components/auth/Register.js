@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Alert from '../alert/Alert'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
-
+  const [user, setUser] = useState({});
+  const [error, setError] = useState(false);
+  
   const sendInformation = e => {
       e.preventDefault()
   }
