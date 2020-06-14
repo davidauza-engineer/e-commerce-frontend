@@ -7,7 +7,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Swal from "sweetalert2";
+import clienteAxios from "../../config/axios";
 import Alert from "../alert/Alert";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+const Login = (props) => {
   const classes = useStyles();
   const [user, setUser] = useState({
     email: "",
@@ -37,16 +40,35 @@ export default function Login() {
   });
   const [error, setError] = useState(false);
 
-  const sendInformation = (e) => {
+  const sendInformation = async (e) => {
     e.preventDefault();
-    if (
-      user.email === "" ||
-      user.password === "" 
-    ) {
-      setError(true);
-      return;
+
+    try {
+      const respuesta = await clienteAxios.post("/registrar", user);
+
+      const { token } = respuesta.data;
+      localStorage.setItem("token", token);
+
+      //alerta
+      Swal.fire("Inicio Correcto", "Has iniciado Sesion", "success");
+
+      //redireccionar
+      props.history.push("/");
+    } catch (error) {
+      if (error.response) {
+        Swal.fire({
+          icon: "error",
+          title: "Hubo un error",
+          text: error.response.data.mensaje,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Hubo un error",
+          text: "Hubo un error2",
+        });
+      }
     }
-    setError(false);
   };
 
   return (
@@ -95,4 +117,6 @@ export default function Login() {
       </div>
     </Container>
   );
-}
+};
+
+export default withRouter(Login);
