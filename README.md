@@ -14,3 +14,15 @@ Se implementaron dos dormularios con las siguientes características:
 -------------|-----------------|
 Registro de usuario | Contiene los campos Nombre, Correo electrónico, Contraseña y Repetir Contraseña. Envía un POST request a https://ecommercetsp.herokuapp.com/api/users |
 Inicio de sesión | Contiene los campos Correo electrónico y contraseña. Envía un POST request a https://ecommercetsp.herokuapp.com/api/authenticate |
+
+## Módulo de Sesiones
+
+Se implemento el control de acceso, como lo son las rutas publicas y privadas:
+
+| Acceso | Características |
+-------------|-----------------|
+Rutas Publicas | Contienen las rutas para los componentes "Registro" y "Login" |
+Rutas Privadas | Contiene el acceso a la aplicación, para acceder a esta ruta es necesario el token proporcionado por BE |
+
+## Módulo Home
+Es la vista inicial de la aplicacion despues de hacer Login, en esta vista se encuentran los productos proporcionados por BE
