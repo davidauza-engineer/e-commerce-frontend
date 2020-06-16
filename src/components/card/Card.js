@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard({information}) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -55,9 +55,8 @@ export default function RecipeReviewCard() {
         title="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+        <Typography variant="body2" color="textSecondary" component="h1">
+           {information.name}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -71,3 +70,15 @@ export default function RecipeReviewCard() {
     </Card>
   );
 }
+
+
+/**
+ *   const consultarAPI = async () => {
+    const cliente = await clienteAxios.get("/clientes");
+    setInformacionCliente(cliente.data);
+  };
+
+  useEffect(() => {
+    consultarAPI();
+  }, [informacionCliente]);
+ */

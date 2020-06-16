@@ -67,12 +67,13 @@ const SignIn = (props) => {
       password: userInfo.password,
       password_confirmation: userInfo.password_confirmation,
     };
-    console.log();
 
     try {
-      await clienteAxios.post(`/users`, { api_user });
-      Swal.fire("Tu Registro fue exitoso", "Has iniciado Sesion", "success");
-      props.history.push("/");
+      const respuesta = await clienteAxios.post(`/users`, { api_user });
+      Swal.fire("Tu Registro fue exitoso", "Puedes hacer Login", "success");
+      console.log(respuesta);
+      
+      props.history.push("/login");
     } catch (error) {
       console.log(error);
     }

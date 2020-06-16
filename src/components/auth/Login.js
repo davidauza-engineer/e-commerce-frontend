@@ -40,34 +40,33 @@ const Login = (props) => {
   });
   const [error, setError] = useState(false);
 
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
   const sendInformation = async (e) => {
     e.preventDefault();
 
+    if (user.email === "" && user.password === "") {
+      setError(true);
+      return;
+    }
+
+    setError(false);
     try {
-      const respuesta = await clienteAxios.post("/registrar", user);
-
-      const { token } = respuesta.data;
-      localStorage.setItem("token", token);
-
-      //alerta
+      const respuesta = await clienteAxios.post("/authenticate", user);
+      const { auth_token } = respuesta.data;
+      localStorage.setItem("auth_token", auth_token);
       Swal.fire("Inicio Correcto", "Has iniciado Sesion", "success");
-
-      //redireccionar
       props.history.push("/");
     } catch (error) {
-      if (error.response) {
-        Swal.fire({
-          icon: "error",
-          title: "Hubo un error",
-          text: error.response.data.mensaje,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Hubo un error",
-          text: "Hubo un error2",
-        });
-      }
+      console.log(error.response);
+      console.log(error.response.data.user_authentication);
+      Swal.fire({
+        icon: "error",
+        title: "Hubo un error",
+        text: error.response.data.error.user_authentication
+      });
     }
   };
 
@@ -92,6 +91,7 @@ const Login = (props) => {
             id="email"
             label="Correo electronico"
             name="email"
+            onChange={handleChange}
             autoComplete="email"
           />
           <TextField
@@ -100,6 +100,7 @@ const Login = (props) => {
             fullWidth
             name="password"
             label="Contraseña"
+            onChange={handleChange}
             type="password"
             id="password"
             autoComplete="current-password"
