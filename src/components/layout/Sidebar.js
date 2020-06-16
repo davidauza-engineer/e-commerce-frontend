@@ -17,6 +17,8 @@ import MenuList from "@material-ui/core/MenuList";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PetsIcon from "@material-ui/icons/Pets";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -86,13 +87,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({ children, history }) {
+const Navbar = ({ children })=> {
+  const history = useHistory();
   const classes = useStyles();
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      console.log("enter press here! ");
-    }
-  };
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -124,6 +121,11 @@ export default function SearchAppBar({ children, history }) {
     prevOpen.current = open;
   }, [open]);
 
+  const cerrarSesion = () => {
+    localStorage.clear();
+    history.push("/login");
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.navbar}>
@@ -145,9 +147,6 @@ export default function SearchAppBar({ children, history }) {
               <SearchIcon />
             </div>
             <InputBase
-              onChange={() => console.log("onChange")}
-              onSubmit={() => console.log("onRequestSearch")}
-              onKeyPress={handleKeyPress}
               placeholder="Si quieres consentir a tu mascota, empieza aquí"
               classes={{
                 root: classes.inputRoot,
@@ -188,7 +187,7 @@ export default function SearchAppBar({ children, history }) {
                       onKeyDown={handleListKeyDown}
                     >
                       <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                      <MenuItem onClick={handleClose}>Salir</MenuItem>
+                      <MenuItem onClick={cerrarSesion}>Salir</MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -206,3 +205,4 @@ export default function SearchAppBar({ children, history }) {
     </div>
   );
 }
+export default  withRouter(Navbar)
